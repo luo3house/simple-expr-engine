@@ -16,24 +16,22 @@ export enum Operator {
 
   expr -> ( expr )
   expr -> ( expr op expr )
-  expr -> ( var op value )
-  expr -> ( var op var )
+  expr -> ( value op value )
   op -> and | or | = | <> | < | > | <= | >=
+  value -> BOOL | "String" | NUMBER | var
   var -> String
-  value -> BOOL | "String" | NUMBER
 
 */
 
 export enum ExprGrammar {
   Expr,
   ExprOpExpr,
-  VarOpValue,
-  VarOpVar,
+  ValueOpValue,
 }
 
-export type Left = Expr | Var;
+export type Left = Expr | Value;
 
-export type Right = Expr | Value | Var;
+export type Right = Expr | Value;
 
 export type Context = {
   variableStore: VariableStore;
@@ -47,14 +45,10 @@ export class Expr {
 
   getGrammar(): ExprGrammar | null {
     const { left, op, right } = this;
-    if (left.constructor === Expr && op === null && right.constructor === null)
-      return ExprGrammar.Expr;
-    if (left.constructor === Expr && op !== null && right.constructor === Expr)
-      return ExprGrammar.ExprOpExpr;
-    if (left.constructor === Var && op !== null && right.constructor === Value)
-      return ExprGrammar.VarOpValue;
-    if (left.constructor === Var && op !== null && right.constructor === Var)
-      return ExprGrammar.VarOpVar;
+    if (left instanceof Expr && op === null && right === null) return ExprGrammar.Expr;
+    if (left instanceof Expr && op !== null && right instanceof Expr) return ExprGrammar.ExprOpExpr;
+    if (left instanceof Value && op !== null && right instanceof Value)
+      return ExprGrammar.ValueOpValue;
     return null;
   }
 }
@@ -63,20 +57,16 @@ export class Op {
   constructor(public context: Context, public op: Operator) {}
 }
 
-export class Var {
-  constructor(public context: Context, public name: string) {}
-
-  getVariable() {
-    const v = this.context.variableStore.findByName(this.name);
-    if (!v) throw new VariableNotFoundError(this.name);
-    return v;
-  }
+export class Value {
+  constructor(public context: Context, public valueHolder: ValueHolder) {}
 
   getValue() {
-    return new Value(this.context, this.getVariable().holder);
+    return new Value(this.context, this.valueHolder);
   }
 }
 
-export class Value {
-  constructor(public context: Context, public valueHolder: ValueHolder) {}
+export class Var extends Value {
+  constructor(public context: Context, public name: string) {
+    super(context, context.variableStore.findByName(name).holder);
+  }
 }

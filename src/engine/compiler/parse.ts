@@ -43,12 +43,21 @@ module States {
     build(ctx: Context, expr: Expr, reader: TokenReader, holder: StateHolder) {
       const token = this.mustReadToken(reader);
       switch (token.morpheme) {
-        case Morpheme.VAR:
-          expr.left = new Var(ctx, token.chars);
-          break;
         case Morpheme.LEFT_BRACKET:
           reader.rollback();
           expr.left = new Parser(ctx, reader).build();
+          break;
+        case Morpheme.VAR:
+          expr.left = new Var(ctx, token.chars);
+          break;
+        case Morpheme.BOOL:
+          expr.left = new Value(expr.context, ValueHolder.newBOOL(token.chars === 'true'));
+          break;
+        case Morpheme.NUMBER:
+          expr.left = new Value(expr.context, ValueHolder.newNUMBER(parseFloat(token.chars)));
+          break;
+        case Morpheme.STRING:
+          expr.left = new Value(expr.context, ValueHolder.newSTRING(token.unescapeSTRING()));
           break;
         default:
           throw new UnexpectedMorphemeError(expr, token);

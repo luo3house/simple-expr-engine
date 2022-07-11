@@ -5,11 +5,9 @@ import { Variable, VariableStore } from '../src/engine/variable';
 
 test('true <> false', () => {
   const context = {
-    variableStore: new VariableStore([
-      Variable.defineBOOL('switch', false), //
-    ]),
+    variableStore: new VariableStore([]),
   };
-  const chars = `( switch = true )`.split(' ');
+  const chars = `( false = true )`.split(' ');
   const reader = Token.newReader(Token.recognizeAll(chars));
   const expr = new Parser(context, reader).build();
   expect(Interpreter.interpret(expr)).toBe(false);
@@ -17,11 +15,9 @@ test('true <> false', () => {
 
 test('1 = true', () => {
   const context = {
-    variableStore: new VariableStore([
-      Variable.defineNUMBER('level', 1), //
-    ]),
+    variableStore: new VariableStore([]),
   };
-  const chars = `( level = true )`.split(' ');
+  const chars = `( 1 = true )`.split(' ');
   const reader = Token.newReader(Token.recognizeAll(chars));
   const expr = new Parser(context, reader).build();
   expect(Interpreter.interpret(expr)).toBe(true);
@@ -29,11 +25,9 @@ test('1 = true', () => {
 
 test('ε = false', () => {
   const context = {
-    variableStore: new VariableStore([
-      Variable.defineSTRING('orderId', ''), //
-    ]),
+    variableStore: new VariableStore([]),
   };
-  const chars = `( orderId <> true )`.split(' ');
+  const chars = `( "" <> true )`.split(' ');
   const reader = Token.newReader(Token.recognizeAll(chars));
   const expr = new Parser(context, reader).build();
   expect(Interpreter.interpret(expr)).toBe(true);

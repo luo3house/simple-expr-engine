@@ -1,4 +1,4 @@
-import { Expr, Op, Var, Value, ExprGrammar, Operator } from '../grammar';
+import { Expr, Op, Value, ExprGrammar, Operator } from '../grammar';
 import { VarType } from '../variable';
 
 module Interpretable {
@@ -10,10 +10,8 @@ module Interpretable {
           return ExprResult.result(left as Expr);
         case ExprGrammar.ExprOpExpr:
           return OpResult.resultExprOpExpr(op, left as Expr, right as Expr);
-        case ExprGrammar.VarOpValue:
-          return OpResult.resultVarValue(op, left as Var, right as Value);
-        case ExprGrammar.VarOpVar:
-          return OpResult.resultVarVar(op, left as Var, right as Var);
+        case ExprGrammar.ValueOpValue:
+          return OpResult.resultValueValue(op, left as Value, right as Value);
         default:
           return false;
       }
@@ -30,33 +28,30 @@ module Interpretable {
           return false;
       }
     }
-    static resultVarVar(op: Op, v1: Var, v2: Var) {
-      return this.resultVarValue(op, v1, v2.getValue());
-    }
-    static resultVarValue(op: Op, v: Var, val: Value) {
+    static resultValueValue(op: Op, v1: Value, v2: Value) {
       switch (op.op) {
         case Operator.AND:
           return (
-            v.getValue().valueHolder.cast(VarType.BOOL).asBoolean() &&
-            val.valueHolder.cast(VarType.BOOL).asBoolean()
+            v1.getValue().valueHolder.cast(VarType.BOOL).asBoolean() &&
+            v2.valueHolder.cast(VarType.BOOL).asBoolean()
           );
         case Operator.OR:
           return (
-            v.getValue().valueHolder.cast(VarType.BOOL).asBoolean() ||
-            val.valueHolder.cast(VarType.BOOL).asBoolean()
+            v1.getValue().valueHolder.cast(VarType.BOOL).asBoolean() ||
+            v2.valueHolder.cast(VarType.BOOL).asBoolean()
           );
         case Operator.EQ:
-          return v.getValue().valueHolder.equalsValueWithTypeCast(val.valueHolder);
+          return v1.getValue().valueHolder.equalsValueWithTypeCast(v2.valueHolder);
         case Operator.NE:
-          return !v.getValue().valueHolder.equalsValueWithTypeCast(val.valueHolder);
+          return !v1.getValue().valueHolder.equalsValueWithTypeCast(v2.valueHolder);
         case Operator.LT:
-          return v.getValue().valueHolder.asNumber() < val.valueHolder.asNumber();
+          return v1.getValue().valueHolder.asNumber() < v2.valueHolder.asNumber();
         case Operator.GT:
-          return v.getValue().valueHolder.asNumber() > val.valueHolder.asNumber();
+          return v1.getValue().valueHolder.asNumber() > v2.valueHolder.asNumber();
         case Operator.LTE:
-          return v.getValue().valueHolder.asNumber() <= val.valueHolder.asNumber();
+          return v1.getValue().valueHolder.asNumber() <= v2.valueHolder.asNumber();
         case Operator.GTE:
-          return v.getValue().valueHolder.asNumber() >= val.valueHolder.asNumber();
+          return v1.getValue().valueHolder.asNumber() >= v2.valueHolder.asNumber();
         default:
           return false;
       }
