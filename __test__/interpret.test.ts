@@ -3,21 +3,21 @@ import { Interpreter } from '../src/engine/compiler/interpret';
 import { Token } from '../src/engine/compiler/tokenizer';
 import { Variable, VariableStore } from '../src/engine/variable';
 
-test('true <> false', () => {
+test('true != false', () => {
   const context = {
     variableStore: new VariableStore([]),
   };
-  const chars = `( false = true )`.split(' ');
+  const chars = `( false == true )`.split(' ');
   const reader = Token.newReader(Token.recognizeAll(chars));
   const expr = new Parser(context, reader).build();
   expect(Interpreter.interpret(expr)).toBe(false);
 });
 
-test('1 = true', () => {
+test('1 == true', () => {
   const context = {
     variableStore: new VariableStore([]),
   };
-  const chars = `( 1 = true )`.split(' ');
+  const chars = `( 1 == true )`.split(' ');
   const reader = Token.newReader(Token.recognizeAll(chars));
   const expr = new Parser(context, reader).build();
   expect(Interpreter.interpret(expr)).toBe(true);
@@ -27,7 +27,7 @@ test('ε = false', () => {
   const context = {
     variableStore: new VariableStore([]),
   };
-  const chars = `( "" <> true )`.split(' ');
+  const chars = `( "" != true )`.split(' ');
   const reader = Token.newReader(Token.recognizeAll(chars));
   const expr = new Parser(context, reader).build();
   expect(Interpreter.interpret(expr)).toBe(true);
@@ -42,7 +42,7 @@ test('integer constant preset', () => {
       Variable.defineNUMBER('OrderStatus_Exception', -1),
     ]),
   };
-  const chars = `( order_status = OrderStatus_Exception )`.split(' ');
+  const chars = `( order_status == OrderStatus_Exception )`.split(' ');
   const reader = Token.newReader(Token.recognizeAll(chars));
   const expr = new Parser(context, reader).build();
   expect(Interpreter.interpret(expr)).toBe(true);

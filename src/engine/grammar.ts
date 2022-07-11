@@ -4,8 +4,8 @@ import { ValueHolder, Variable, VariableStore, VarType } from './variable';
 export enum Operator {
   AND = 'and',
   OR = 'or',
-  EQ = '=',
-  NE = '<>',
+  EQ = '==',
+  NE = '!=',
   LT = '<',
   GT = '>',
   LTE = '<=',
@@ -17,7 +17,7 @@ export enum Operator {
   expr -> ( expr )
   expr -> ( expr op expr )
   expr -> ( value op value )
-  op -> and | or | = | <> | < | > | <= | >=
+  op -> and | or | == | != | < | > | <= | >=
   value -> BOOL | "String" | NUMBER | var
   var -> String
 
