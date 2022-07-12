@@ -11,6 +11,22 @@ test('true != false', () => {
   expect(Interpreter.interpretExpr(expr)).toBe(false);
 });
 
+test('inline flatten expr', () => {
+  const context = {
+    variableStore: new VariableStore([]),
+  };
+  {
+    const source = `( ( true == false ) or ( true == true ) and ( 1 == 1 ) and ( 2 == 2 ) and ( false == false ) )`;
+    const expr = Facade.buildExpr(context, source);
+    expect(Interpreter.interpretExpr(expr)).toBe(true);
+  }
+  {
+    const source = `( ( true == false ) or ( 2 == 1 ) )`;
+    const expr = Facade.buildExpr(context, source);
+    expect(Interpreter.interpretExpr(expr)).toBe(false);
+  }
+});
+
 test('1 == true', () => {
   const context = {
     variableStore: new VariableStore([]),

@@ -114,6 +114,16 @@ module ExprParseState {
         case Morpheme.RIGHT_BRACKET:
           holder.setState(new End());
           break;
+        case Morpheme.OPERATOR:
+          const newExpr = new Expr(ctx);
+          newExpr.left = expr.left;
+          newExpr.op = expr.op;
+          newExpr.right = expr.right;
+          expr.left = newExpr;
+          expr.right = null!;
+          reader.rollback();
+          holder.setState(new ReadOp());
+          break;
         default:
           throw new UnexpectedMorphemeError(token);
       }
