@@ -14,9 +14,9 @@ export class ExprError extends Error {
   }
 }
 
-export class UnexpectedMorphemeError extends ExprError {
-  constructor(public expr: Expr, public token: Token) {
-    super(expr, `unexpected morpheme ${token.toString()} while building expr: ${expr.toString()}`);
+export class UnexpectedMorphemeError extends Error {
+  constructor(public token: Token) {
+    super(`unexpected morpheme ${token.toString()}`);
   }
 }
 
@@ -53,5 +53,11 @@ export class TypeNotMatchError extends Error {
 export class WithCharsReadedError extends Error {
   constructor(public charsReaded: string, public nestedError: Error) {
     super(nestedError?.message ?? '');
+  }
+}
+
+export class NoRuleResultError extends Error {
+  constructor() {
+    super(`no rule result is return out`);
   }
 }

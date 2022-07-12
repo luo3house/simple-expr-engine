@@ -14,6 +14,7 @@ export enum Operator {
 
 /*
 
+  rule -> ( expr ) => value
   expr -> ( expr )
   expr -> ( expr op expr )
   expr -> ( value op value )
@@ -37,6 +38,12 @@ export type Context = {
   variableStore: VariableStore;
 };
 
+export class Rule {
+  public expr!: Expr;
+  public result!: Value;
+  constructor(public context: Context) {}
+}
+
 export class Expr {
   public left!: Left;
   public op!: Op;
@@ -59,10 +66,6 @@ export class Op {
 
 export class Value {
   constructor(public context: Context, public valueHolder: ValueHolder) {}
-
-  getValue() {
-    return new Value(this.context, this.valueHolder);
-  }
 }
 
 export class Var extends Value {

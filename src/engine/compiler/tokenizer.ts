@@ -9,11 +9,13 @@ export enum Morpheme {
   RIGHT_BRACKET,
   VAR,
   OPERATOR,
+  RESULT_POINTING,
   BOOL,
   NUMBER,
   STRING,
 }
-const { LEFT_BRACKET, RIGHT_BRACKET, VAR, BOOL, NUMBER, STRING, OPERATOR } = Morpheme;
+const { LEFT_BRACKET, RIGHT_BRACKET, VAR, RESULT_POINTING, BOOL, NUMBER, STRING, OPERATOR } =
+  Morpheme;
 
 type TokenRecognizers = (chars: string) => Token | false;
 
@@ -61,6 +63,7 @@ export class Token {
     (c) => /^\)$/.test(c) && new Token(RIGHT_BRACKET, c),
     (c) => /^(and)$/.test(c) && new Token(OPERATOR, Operator.AND),
     (c) => /^(or)$/.test(c) && new Token(OPERATOR, Operator.OR),
+    (c) => /^(=>)$/.test(c) && new Token(RESULT_POINTING, c),
     (c) => /^(!=)$/.test(c) && new Token(OPERATOR, Operator.NE),
     (c) => /^(<=)$/.test(c) && new Token(OPERATOR, Operator.LTE),
     (c) => /^(>=)$/.test(c) && new Token(OPERATOR, Operator.GTE),
