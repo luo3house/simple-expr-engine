@@ -58,6 +58,32 @@ export class Token {
     return tokens;
   }
 
+  public static escapeStringCharacters(characters: string[]): string[] {
+    const escaped: string[] = [];
+    let concatChars: string[] = [];
+    const flushConcatChars = () => {
+      const concated = concatChars.join('').trim();
+      if (concated.length) escaped.push(concated);
+      concatChars = [];
+    };
+    for (let i = 0; i < characters.length; i++) {
+      const char = characters[i];
+      if (concatChars[0] === `"`) {
+        concatChars.push(char);
+        if (char === `"`) flushConcatChars(); // end string quote
+      } else if (char === ' ') {
+        flushConcatChars();
+      } else {
+        if (char === `"`) {
+          flushConcatChars(); // start string quote
+        }
+        concatChars.push(char);
+      }
+    }
+    flushConcatChars();
+    return escaped;
+  }
+
   private static TokenRecognizers: TokenRecognizers[] = [
     (c) => /^(\()$/.test(c) && new Token(LEFT_BRACKET, c),
     (c) => /^\)$/.test(c) && new Token(RIGHT_BRACKET, c),

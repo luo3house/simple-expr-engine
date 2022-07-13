@@ -114,7 +114,7 @@ module ExprParseState {
         case Morpheme.RIGHT_BRACKET:
           holder.setState(new End());
           break;
-        case Morpheme.OPERATOR:
+        case Morpheme.OPERATOR: // a op b op c -> ( a op b ) op c
           const newExpr = new Expr(ctx);
           newExpr.left = expr.left;
           newExpr.op = expr.op;

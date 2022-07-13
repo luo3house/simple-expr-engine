@@ -16,9 +16,9 @@ test('inline flatten expr', () => {
     variableStore: new VariableStore([]),
   };
   {
-    const source = `( ( true == false ) or ( true == true ) and ( 1 == 1 ) and ( 2 == 2 ) and ( false == false ) )`;
+    const source = `( ( true == true ) and ( true == true ) and ( 1 == 1 ) and ( 2 == 2 ) and ( false == true ) )`;
     const expr = Facade.buildExpr(context, source);
-    expect(Interpreter.interpretExpr(expr)).toBe(true);
+    expect(Interpreter.interpretExpr(expr)).toBe(false);
   }
   {
     const source = `( ( true == false ) or ( 2 == 1 ) )`;
@@ -55,6 +55,15 @@ test('integer constant preset', () => {
     ]),
   };
   const source = `( order_status == OrderStatus_Exception )`;
+  const expr = Facade.buildExpr(context, source);
+  expect(Interpreter.interpretExpr(expr)).toBe(true);
+});
+
+test('blank in string', () => {
+  const context = {
+    variableStore: new VariableStore([]),
+  };
+  const source = `( "hello world" == "hello world" )`;
   const expr = Facade.buildExpr(context, source);
   expect(Interpreter.interpretExpr(expr)).toBe(true);
 });
