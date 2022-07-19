@@ -1,5 +1,4 @@
-import { VariableNotFoundError } from './errors';
-import { ValueHolder, Variable, VariableStore, VarType } from './variable';
+import { ValueHolder, VariableStore } from './variable';
 
 export enum Operator {
   AND = 'and',

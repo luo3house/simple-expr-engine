@@ -1,8 +1,15 @@
 // 词法分析
 
 import { Operator } from '../grammar';
-import { TokenNotRecognizeError } from '../errors';
 import { TokenReader } from './parse';
+
+export module TokenizerErrors {
+  export class TokenNotRecognizeError extends Error {
+    constructor(chars: string) {
+      super(`unrecognized token: ${chars}`);
+    }
+  }
+}
 
 export enum Morpheme {
   LEFT_BRACKET,
@@ -47,7 +54,7 @@ export class Token {
         return token;
       }
     }
-    throw new TokenNotRecognizeError(tkn);
+    throw new TokenizerErrors.TokenNotRecognizeError(tkn);
   }
 
   public static recognizeAll(characters: string[]): Token[] {

@@ -1,5 +1,3 @@
-import { VariableNotFoundError } from './errors';
-
 export enum VarType {
   BOOL,
   NUMBER,

@@ -1,6 +1,18 @@
-import { OpNotMatchError, VariableNotFoundError } from '../errors';
 import { Expr, Op, Var, Value, Left, Right, Operator } from '../grammar';
 import { VariableStore } from '../variable';
+
+export module SemanticErrors {
+  export class OpNotMatchError extends Error {
+    constructor(public op: Op, public left: Left, public right: Right) {
+      super(`op is not match at ( left op right ): (${left} ${op} ${right})`);
+    }
+  }
+  export class VariableNotFoundError extends Error {
+    constructor(name: string) {
+      super(`variable ${name} not found`);
+    }
+  }
+}
 
 export type Context = {
   variableStore: VariableStore;
@@ -31,7 +43,7 @@ export class Semantic {
   matchOp(op: Op, left: Left, right: Right) {
     if (left.constructor === Expr && right.constructor === Expr) {
       if (!([Operator.AND, Operator.OR].indexOf(op.op) !== -1)) {
-        throw new OpNotMatchError(op, left, right);
+        throw new SemanticErrors.OpNotMatchError(op, left, right);
       }
     } else if (
       (left.constructor === Var && right.constructor === Value) ||
@@ -44,14 +56,14 @@ export class Semantic {
           ) !== -1
         )
       ) {
-        throw new OpNotMatchError(op, left, right);
+        throw new SemanticErrors.OpNotMatchError(op, left, right);
       }
     }
   }
 
   matchVar(v: Var) {
     if (!v.context.variableStore.findByName(v.name)) {
-      throw new VariableNotFoundError(v.name);
+      throw new SemanticErrors.VariableNotFoundError(v.name);
     }
   }
 }

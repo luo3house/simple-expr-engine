@@ -1,7 +1,7 @@
-import { Interpreter } from '../src/engine/compiler/interpret';
-import { Variable, VariableStore } from '../src/engine/variable';
-import { Facade } from '../src/engine/compiler/facade';
-import { NoRuleResultError } from '../src/engine/errors';
+import { Interpreter } from '../engine/compiler/interpret';
+import { Variable, VariableStore } from '../engine/variable';
+import { Facade } from '../engine/compiler/facade';
+import { NoRuleResultError } from '..';
 
 test('all constant values', () => {
   const context = {

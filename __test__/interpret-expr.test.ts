@@ -1,6 +1,6 @@
-import { Interpreter } from '../src/engine/compiler/interpret';
-import { Variable, VariableStore } from '../src/engine/variable';
-import { Facade } from '../src/engine/compiler/facade';
+import { Interpreter } from '../engine/compiler/interpret';
+import { Variable, VariableStore } from '../engine/variable';
+import { Facade } from '../engine/compiler/facade';
 
 test('true != false', () => {
   const context = {

@@ -1,6 +1,13 @@
-import { NoRuleResultError } from '../errors';
 import { Expr, Op, Value, ExprGrammar, Operator, Rule } from '../grammar';
 import { ValueHolder, VarType } from '../variable';
+
+export module InterpretErrors {
+  export class NoRuleResultError extends Error {
+    constructor() {
+      super(`no rule result is return out`);
+    }
+  }
+}
 
 module Interpretable {
   export class ExprResult {
@@ -71,6 +78,6 @@ export class Interpreter {
         return rule.result;
       }
     }
-    throw new NoRuleResultError();
+    throw new InterpretErrors.NoRuleResultError();
   }
 }

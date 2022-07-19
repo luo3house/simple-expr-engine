@@ -1,9 +1,21 @@
 // 语法分析
 
 import { Context, Expr, Var, Op, Operator, Value, Rule } from '../grammar';
-import { UnexpectedMorphemeError, UnexpectedEOFError } from '../errors';
 import { Morpheme, Token } from './tokenizer';
 import { ValueHolder } from '../variable';
+
+export module ParseErrors {
+  export class UnexpectedMorphemeError extends Error {
+    constructor(public token: Token) {
+      super(`unexpected morpheme ${token.toString()}`);
+    }
+  }
+  export class UnexpectedEOFError extends Error {
+    constructor() {
+      super(`unexpected EOF`);
+    }
+  }
+}
 
 export interface TokenReader {
   read(): Token | null;
@@ -18,7 +30,7 @@ module ExprParseState {
   export abstract class BaseState {
     mustReadToken(reader: TokenReader) {
       const token = reader.read();
-      if (!token) throw new UnexpectedEOFError();
+      if (!token) throw new ParseErrors.UnexpectedEOFError();
       return token;
     }
     abstract build(ctx: Context, expr: Expr, reader: TokenReader, holder: StateHolder): void;
@@ -36,7 +48,7 @@ module ExprParseState {
         holder.setState(new ReadLeft());
         return;
       }
-      throw new UnexpectedMorphemeError(token);
+      throw new ParseErrors.UnexpectedMorphemeError(token);
     }
   }
   export class ReadLeft extends BaseState {
@@ -60,7 +72,7 @@ module ExprParseState {
           expr.left = new Value(expr.context, ValueHolder.newSTRING(token.unescapeSTRING()));
           break;
         default:
-          throw new UnexpectedMorphemeError(token);
+          throw new ParseErrors.UnexpectedMorphemeError(token);
       }
       holder.setState(new ReadOp());
     }
@@ -76,7 +88,7 @@ module ExprParseState {
           expr.op = new Op(expr.context, token.chars as Operator);
           break;
         default:
-          throw new UnexpectedMorphemeError(token);
+          throw new ParseErrors.UnexpectedMorphemeError(token);
       }
       holder.setState(new ReadRight());
     }
@@ -102,7 +114,7 @@ module ExprParseState {
           expr.right = new Value(expr.context, ValueHolder.newSTRING(token.unescapeSTRING()));
           break;
         default:
-          throw new UnexpectedMorphemeError(token);
+          throw new ParseErrors.UnexpectedMorphemeError(token);
       }
       holder.setState(new ReadRightBracket());
     }
@@ -125,7 +137,7 @@ module ExprParseState {
           holder.setState(new ReadOp());
           break;
         default:
-          throw new UnexpectedMorphemeError(token);
+          throw new ParseErrors.UnexpectedMorphemeError(token);
       }
     }
   }
@@ -170,7 +182,7 @@ module RuleParseState {
   export abstract class BaseState {
     mustReadToken(reader: TokenReader) {
       const token = reader.read();
-      if (!token) throw new UnexpectedEOFError();
+      if (!token) throw new ParseErrors.UnexpectedEOFError();
       return token;
     }
     abstract build(ctx: Context, rule: Rule, reader: TokenReader, holder: StateHolder): void;
@@ -185,7 +197,7 @@ module RuleParseState {
           holder.setState(new ReadArrow());
           break;
         default:
-          throw new UnexpectedMorphemeError(token);
+          throw new ParseErrors.UnexpectedMorphemeError(token);
       }
     }
   }
@@ -197,7 +209,7 @@ module RuleParseState {
           holder.setState(new ReadResult());
           break;
         default:
-          throw new UnexpectedMorphemeError(token);
+          throw new ParseErrors.UnexpectedMorphemeError(token);
       }
     }
   }
@@ -218,7 +230,7 @@ module RuleParseState {
           rule.result = new Value(ctx, ValueHolder.newSTRING(token.unescapeSTRING()));
           break;
         default:
-          throw new UnexpectedMorphemeError(token);
+          throw new ParseErrors.UnexpectedMorphemeError(token);
       }
       holder.setState(new End());
     }
