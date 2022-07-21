@@ -90,3 +90,50 @@ const expr = Facade.buildExpr(context, source);
 // interpret
 Interpreter.interpretExpr(expr); // true
 ~~~
+
+with variables:
+~~~ javascript
+const context = {
+  variableStore: new VariableStore([
+    Variable.defineNUMBER('exp', 150),
+  ]),
+};
+const source = `( exp == 150 )`;
+const result = Interpreter.interpretExpr(
+  Facade.buildExpr(context, source)
+); // true
+~~~
+
+### Interpret Rule
+
+~~~ typescript
+const context = {
+  variableStore: new VariableStore([
+    Variable.defineNUMBER('exp', 150),
+  ]),
+};
+const sources = [
+  "( exp < 7 ) => 1",
+  "( exp < 16 ) => 2",
+  "( exp < 27 ) => 3",
+  "( exp < 40 ) => 4",
+  "( exp < 55 ) => 5",
+  "( exp < 72 ) => 6",
+  "( exp < 91 ) => 7",
+  "( exp < 112 ) => 8",
+  "( exp < 135 ) => 9",
+  "( exp < 160 ) => 10",
+];
+try {
+  const level = Interpreter.interpretRules(
+    Facade.buildRules(context, sources)
+  ); // 9
+} catch (e: NoRuleResultError) {
+  // throw if no any rules matched
+}
+~~~
+
+
+To see more examples. Please visit `__test__` dir.
+
+

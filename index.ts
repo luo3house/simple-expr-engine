@@ -20,21 +20,25 @@ import { Token } from './engine/compiler/tokenizer';
 export { Facade };
 
 // interpret
+export { InterpretErrors };
 export const { NoRuleResultError } = InterpretErrors;
 export { Interpreter };
 
 // parse
+export { ParseErrors };
 export const { UnexpectedMorphemeError, UnexpectedEOFError } = ParseErrors;
 export { TokenReader };
 export { ExprParser };
 export { RuleParser };
 
 // semantic
+export { SemanticErrors };
 export const { OpNotMatchError, VariableNotFoundError } = SemanticErrors;
 export { Context };
 export { Semantic };
 
 // tokenizer
+export { TokenizerErrors };
 export const { TokenNotRecognizeError } = TokenizerErrors;
 export { Morpheme };
 export { Token };
