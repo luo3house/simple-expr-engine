@@ -1,7 +1,6 @@
 import { Interpreter } from '../engine/compiler/interpret';
 import { Variable, VariableStore } from '../engine/variable';
 import { Facade } from '../engine/compiler/facade';
-import { NoRuleResultError } from '..';
 
 test('all constant values', () => {
   const context = {
@@ -63,5 +62,6 @@ test('no result', () => {
     `( level == GUEST_LEVEL_BRONZE ) => 90`,
   ];
   const rules = Facade.buildRules(context, sources);
-  expect(() => Interpreter.interpretRules(rules)).toThrow(NoRuleResultError);
+  // const { NoRuleResultError } = require('..')
+  expect(() => Interpreter.interpretRules(rules)).toThrow('no rule result');
 });
