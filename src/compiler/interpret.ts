@@ -1,5 +1,5 @@
-import { Expr, Op, Value, ExprGrammar, Operator, Rule } from '../grammar';
-import { ValueHolder, VarType } from '../variable';
+import { Expr, Op, Value, ExprGrammar, Operator, Rule } from '../core/grammar';
+import { VarType } from '../core/variable';
 
 export module InterpretErrors {
   export class NoRuleResultError extends Error {

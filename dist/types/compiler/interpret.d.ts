@@ -1,4 +1,4 @@
-import { Expr, Value, Rule } from '../grammar';
+import { Expr, Value, Rule } from '../core/grammar';
 export declare module InterpretErrors {
     class NoRuleResultError extends Error {
         constructor();

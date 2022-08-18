@@ -1,5 +1,4 @@
-import { Expr, Op, Var, Value, Left, Right, Operator } from '../grammar';
-import { VariableStore } from '../variable';
+import { Expr, Op, Var, Value, Left, Right, Operator } from '../core/grammar';
 
 export module SemanticErrors {
   export class OpNotMatchError extends Error {
@@ -13,10 +12,6 @@ export module SemanticErrors {
     }
   }
 }
-
-export type Context = {
-  variableStore: VariableStore;
-};
 
 export class Semantic {
   matchExpr(expr: Expr) {

@@ -2,19 +2,39 @@
   "name": "simple-expr-engine",
   "version": "1.0.0",
   "description": "Simple Rule & Expression Interpreter",
-  "main": "dist/index.js",
-  "types": "types/index.d.ts",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/types/index.d.ts",
   "repository": "https://github.com/luo3house/simple-expr-engine",
   "author": "luoyz <452635801@qq.com>",
   "license": "MIT",
+  "sideEffects": false,
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "prepare": "husky install",
+    "build:types": "tsc",
+    "build:cjs": "rollup -c rollup.config.ts",
+    "build:esm": "babel --extensions '.ts' src -d dist/esm",
+    "build:dist": "rimraf -rf ./dist && yarn build:cjs && yarn build:esm && yarn build:types"
   },
   "devDependencies": {
+    "@babel/cli": "^7.18.10",
+    "@babel/core": "^7.18.10",
+    "@babel/preset-env": "^7.18.10",
+    "@babel/preset-typescript": "^7.18.6",
+    "@rollup/plugin-babel": "^5.3.1",
+    "@rollup/plugin-node-resolve": "^13.3.0",
     "@types/jest": "^28.1.4",
+    "husky": "^8.0.1",
     "jest": "^28.1.2",
+    "rimraf": "^3.0.2",
+    "rollup": "^2.78.0",
+    "rollup-plugin-bundle-size": "^1.0.3",
     "ts-jest": "^28.0.5",
     "ts-node": "^10.8.2",
     "typescript": "^4.7.4"
+  },
+  "dependencies": {
+    "rollup-plugin-terser": "^7.0.2"
   }
 }

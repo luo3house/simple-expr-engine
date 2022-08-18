@@ -1,4 +1,4 @@
-import { Context, Expr, Rule } from '../grammar';
+import { Context, Expr, Rule } from '../core/grammar';
 import { ExprParser, RuleParser } from './parse';
 import { Token } from './tokenizer';
 

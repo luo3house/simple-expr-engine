@@ -1,4 +1,4 @@
-import { Context, Expr, Rule } from '../grammar';
+import { Context, Expr, Rule } from '../core/grammar';
 import { Token } from './tokenizer';
 export declare module ParseErrors {
     class UnexpectedMorphemeError extends Error {

@@ -1,8 +1,8 @@
 // 语法分析
 
-import { Context, Expr, Var, Op, Operator, Value, Rule } from '../grammar';
+import { Context, Expr, Var, Op, Operator, Value, Rule } from '../core/grammar';
 import { Morpheme, Token } from './tokenizer';
-import { ValueHolder } from '../variable';
+import { ValueHolder } from '../core/variable';
 
 export module ParseErrors {
   export class UnexpectedMorphemeError extends Error {

@@ -1,6 +1,6 @@
 // 词法分析
 
-import { Operator } from '../grammar';
+import { Operator } from '../core/grammar';
 import { TokenReader } from './parse';
 
 export module TokenizerErrors {
