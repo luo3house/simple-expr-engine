@@ -6,6 +6,7 @@ export class Facade {
   static buildRules(context: Context, ruleSources: string[]): Rule[] {
     const rules: Rule[] = [];
     ruleSources.forEach((ruleSource) => {
+      if (!ruleSource) return;
       const characters = Token.escapeStringCharacters(ruleSource.split(''));
       rules.push(new RuleParser(context, Token.newReader(Token.recognizeAll(characters))).build());
     });

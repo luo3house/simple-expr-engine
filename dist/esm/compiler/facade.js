@@ -16,6 +16,7 @@ export var Facade = /*#__PURE__*/function () {
     value: function buildRules(context, ruleSources) {
       var rules = [];
       ruleSources.forEach(function (ruleSource) {
+        if (!ruleSource) return;
         var characters = Token.escapeStringCharacters(ruleSource.split(''));
         rules.push(new RuleParser(context, Token.newReader(Token.recognizeAll(characters))).build());
       });

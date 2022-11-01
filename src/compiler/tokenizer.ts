@@ -60,6 +60,7 @@ export class Token {
   public static recognizeAll(characters: string[]): Token[] {
     const tokens: Token[] = [];
     for (let i = 0; i < characters.length; i++) {
+      if (!characters[i]) continue;
       tokens.push(Token.recognize(characters[i]));
     }
     return tokens;

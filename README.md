@@ -2,6 +2,28 @@
 
 This is a simple engine for parsing and interpreting expressions and rules.
 
+## Install
+
+add dependency at `package.json`, then install
+
+~~~json
+"dependencies": {
+  "simple-expr-engine": "git+https://github.com/luo3house/simple-expr-engine"
+}
+~~~
+
+~~~bash
+npm install
+# or if use yarn
+yarn
+~~~
+
+### UMD
+
+Directly use UMD with global variable `simple_expr_engine`: 
+
+[https://github.com/luo3house/simple-expr-engine/tree/master/dist/umd/index.min.js](https://github.com/luo3house/simple-expr-engine/tree/master/dist/umd/index.min.js)
+
 ## Expression Grammar
 
 It is described as a JavaScript-like language. But not all features as JavaScript.
@@ -125,9 +147,10 @@ const sources = [
   "( exp < 160 ) => 10",
 ];
 try {
-  const level = Interpreter.interpretRules(
+  const result = Interpreter.interpretRules(
     Facade.buildRules(context, sources)
-  ); // 9
+  ); 
+  const level = result.valueHolder.asNumber() // 9
 } catch (e: NoRuleResultError) {
   // throw if no any rules matched
 }

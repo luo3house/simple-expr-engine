@@ -11,6 +11,15 @@ test('all constant values', () => {
   expect(Interpreter.interpretRules(rules).valueHolder.asNumber()).toBe(2022);
 });
 
+test('empty expr', () => {
+  const context = {
+    variableStore: new VariableStore([]),
+  };
+  const source = ``;
+  const rules = Facade.buildRules(context, [source]);
+  expect(() => Interpreter.interpretRules(rules)).toThrow('no rule result');
+});
+
 test('as variable', () => {
   const context = {
     variableStore: new VariableStore([

@@ -156,6 +156,7 @@ export var Token = /*#__PURE__*/function () {
       var tokens = [];
 
       for (var i = 0; i < characters.length; i++) {
+        if (!characters[i]) continue;
         tokens.push(Token.recognize(characters[i]));
       }
 

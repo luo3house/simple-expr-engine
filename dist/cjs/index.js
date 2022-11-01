@@ -570,6 +570,7 @@ var Token = /*#__PURE__*/function () {
       var tokens = [];
 
       for (var i = 0; i < characters.length; i++) {
+        if (!characters[i]) continue;
         tokens.push(Token.recognize(characters[i]));
       }
 
@@ -1209,6 +1210,7 @@ var Facade = /*#__PURE__*/function () {
     value: function buildRules(context, ruleSources) {
       var rules = [];
       ruleSources.forEach(function (ruleSource) {
+        if (!ruleSource) return;
         var characters = Token.escapeStringCharacters(ruleSource.split(''));
         rules.push(new RuleParser(context, Token.newReader(Token.recognizeAll(characters))).build());
       });
